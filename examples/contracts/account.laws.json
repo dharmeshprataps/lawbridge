@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "name": "account withdrawal transitions",
+  "target": "examples.account:Account",
+  "mode": "stateful",
+  "method": "withdraw",
+  "model": "account.withdraw.v1",
+  "inputs": {"amount": {"type": "int", "min": -2, "max": 105}},
+  "requires": [
+    "input.amount >= 0",
+    "input.amount <= before.balance",
+    "before.spent + input.amount <= before.limit"
+  ],
+  "ensures": [
+    "after.balance == before.balance - input.amount",
+    "after.spent == before.spent + input.amount",
+    "after.balance >= 0",
+    "0 <= after.spent <= after.limit",
+    "result.withdrawn == input.amount",
+    "result.balance == after.balance"
+  ],
+  "unchanged": ["owner", "limit"],
+  "reject_exception": "ValueError",
+  "testing": {"seed": 23, "mode": "sample", "examples": 16, "steps": 8}
+}

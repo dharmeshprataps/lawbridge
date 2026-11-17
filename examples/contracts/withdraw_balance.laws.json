@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "withdrawal arithmetic and rejection",
+  "target": "examples.pure:withdraw_balance",
+  "mode": "pure",
+  "inputs": {
+    "balance": {"type": "int", "min": -1, "max": 8},
+    "amount": {"type": "int", "min": -1, "max": 10}
+  },
+  "requires": ["input.balance >= 0", "0 <= input.amount <= input.balance"],
+  "ensures": ["result == input.balance - input.amount", "result >= 0"],
+  "reject_exception": "ValueError",
+  "testing": {"seed": 19, "mode": "exhaustive", "max_cases": 150}
+}

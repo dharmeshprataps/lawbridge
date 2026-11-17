@@ -1,0 +1,164 @@
+{
+  "verified_on": "2026-11-18",
+  "verification_command": "make build",
+  "environment": {
+    "python": "3.15.2",
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "platform": "Darwin",
+    "architecture": "arm64"
+  },
+  "implementation_proved": false,
+  "model_proofs": {
+    "status": "passed",
+    "count": 14,
+    "models": {
+      "account.withdraw.v1": {
+        "theorems": {
+          "Lawbridge.AccountModel.initialize_valid": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.AccountModel.trace_preserves_validity": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.AccountModel.withdrawal_conserves_accounting": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.AccountModel.withdrawal_preserves_limit": [],
+          "Lawbridge.AccountModel.withdrawal_preserves_owner": [],
+          "Lawbridge.AccountModel.withdrawal_preserves_validity": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        "source": "lean/Lawbridge/AccountModel.lean"
+      },
+      "splitexpense.v1": {
+        "theorems": {
+          "Lawbridge.SplitExpenseModel.append_total": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.balanced_event_preserves_total": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.debits_total": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.expense_balanced": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.history_preserves_total": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.history_preserves_zero": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.member_balance_append": [
+            "propext",
+            "Quot.sound"
+          ],
+          "Lawbridge.SplitExpenseModel.settlement_balanced": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        "source": "lean/Lawbridge/SplitExpenseModel.lean"
+      }
+    }
+  },
+  "http_execution_checks": {
+    "status": "passed",
+    "evidence": "sampled_http_sequences",
+    "seed": 2026,
+    "groups": 12,
+    "bounds": {
+      "members": [
+        2,
+        8
+      ],
+      "random_expense_amount_minor": [
+        1,
+        10001
+      ]
+    },
+    "cases_checked": 216,
+    "eligible_cases": 108,
+    "rejection_cases": 108,
+    "operations": {
+      "expense": 156,
+      "settlement": 60
+    },
+    "http_statuses": {
+      "201": 72,
+      "200": 36,
+      "409": 36,
+      "400": 72
+    }
+  },
+  "negative_checker_probes": [
+    {
+      "id": "negative-probe:balanced-wrong-members",
+      "rejected": true,
+      "failures": [
+        "after snapshot: balance for m0 disagrees with the journal"
+      ]
+    },
+    {
+      "id": "negative-probe:wrong-rounding-response",
+      "rejected": true,
+      "failures": [
+        "response does not describe the requested event",
+        "expense records were not appended exactly once",
+        "idempotency record was not appended exactly once"
+      ]
+    }
+  ],
+  "existing_execution_checks": {
+    "status": "passed",
+    "cases_checked": 329,
+    "contracts": [
+      {
+        "name": "account withdrawal transitions",
+        "cases_checked": 128,
+        "eligible_cases": 43,
+        "ineligible_cases": 85,
+        "evidence": "sampled_executions"
+      },
+      {
+        "name": "exact integer addition",
+        "cases_checked": 81,
+        "eligible_cases": 81,
+        "ineligible_cases": 0,
+        "evidence": "exhaustive_within_bounds"
+      },
+      {
+        "name": "withdrawal arithmetic and rejection",
+        "cases_checked": 120,
+        "eligible_cases": 45,
+        "ineligible_cases": 75,
+        "evidence": "exhaustive_within_bounds"
+      }
+    ]
+  },
+  "tests": {
+    "passed": 42,
+    "command": "python3 -m unittest discover -s tests -v",
+    "scope": "Full project suite, including an actual HTTP server with a deliberately incorrect individual balance calculation."
+  },
+  "scope": "Proofs establish the formal model claims. HTTP observations and function executions test Python conformance. No universal proof of Python, SQLite, HTTP parsing, or state capture is claimed.",
+  "source_sha256": {
+    "splitexpense/__init__.py": "97fdf49be381f42522802cf95175d1bd0677f1015a045c151cb161f435dfa877",
+    "splitexpense/__main__.py": "ab611bf6f64fe959cfbd4dd22f501a75b1c25d1d9e7f55f8fece9117c82fbd21",
+    "splitexpense/laws.py": "d4f710b65da9f050d7f003a1f5157d3d241fc762905e14958aa81179f4db6b67",
+    "splitexpense/server.py": "dab43800630357e2adeba822210c256026379775b23e81f17bec88f53330b367",
+    "splitexpense/store.py": "3c07440babebcc1ab265ab8b5d66310b19dbde055d89339e6e7de46df0a6f6c9"
+  }
+}
